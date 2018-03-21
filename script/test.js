@@ -53,7 +53,7 @@ async function getReleases () {
 
 async function getCurrentBranch () {
   console.log(`Determining current git branch`)
-  let gitArgs = ['rev-parse', '--abbrev-ref', 'HEAD']
+  let gitArgs = ['rev-parse', 'HEAD']
   let branchDetails = await GitProcess.exec(gitArgs, gitDir)
   if (branchDetails.exitCode === 0) {
     let currentBranch = branchDetails.stdout.trim()
