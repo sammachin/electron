@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 require('colors')
+const args = require('minimist')(process.argv.slice(2), {
+  boolean: ['automaticRelease', 'notesOnly', 'stable']
+})
 const assert = require('assert')
 const GitHub = require('github')
 const { GitProcess } = require('dugite')
@@ -17,7 +20,12 @@ github.authenticate({type: 'token', token: process.env.ELECTRON_GITHUB_TOKEN})
 
 async function getReleases () {
   let newVersion = '2.0.0-beta.6'
-  let branchToTarget = await getCurrentBranch(gitDir)
+  let branchToTarget
+  if (args.branch) {
+    branchToTarget = args.branch
+  } else {
+    branchToTarget = await getCurrentBranch(gitDir)
+  }
   console.log(`About to get releases.`)
   const githubOpts = {
     owner: 'electron',
